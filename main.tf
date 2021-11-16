@@ -117,7 +117,7 @@ module "eks_cluster" {
 }
 
 # change context
-resource "null_resource" "java"{
+resource "null_resource" "java" {
   depends_on = [module.eks_cluster]
   provisioner "local-exec" {
     command = "aws eks --region ${local.region}  update-kubeconfig --name $AWS_CLUSTER_NAME"
@@ -132,29 +132,29 @@ resource "kubernetes_deployment" "java" {
   metadata {
     name = "microservice-deployment"
     labels = {
-      app  = "java-microservice"
+      app = "java-microservice"
     }
   }
-spec {
+  spec {
     replicas = 2
-selector {
+    selector {
       match_labels = {
-        app  = "java-microservice"
+        app = "java-microservice"
       }
     }
-template {
+    template {
       metadata {
         labels = {
-          app  = "java-microservice"
+          app = "java-microservice"
         }
       }
-spec {
+      spec {
         container {
           image = "337204325105.dkr.ecr.us-east-1.amazonaws.com/java-app:latest"
           name  = "java-microservice-container"
           port {
             container_port = 8080
-         }
+          }
         }
       }
     }
@@ -175,6 +175,6 @@ resource "kubernetes_service" "java" {
       port        = 80
       target_port = 8080
     }
-type = "LoadBalancer"
-}
+    type = "LoadBalancer"
+  }
 }
