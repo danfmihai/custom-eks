@@ -27,3 +27,7 @@ output "cluster_name" {
   value       = local.cluster_name
   description = "EKS Cluster name"
 }
+
+output "load_balancer_hostname" {
+  value = kubernetes_service.java.status.0.load_balancer.0.ingress.0.hostname
+}
